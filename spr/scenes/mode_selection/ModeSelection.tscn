@@ -1,0 +1,158 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmode_selection_001"]
+
+[ext_resource type="Script" path="res://scripts/ui/ModeSelectionController.cs" id="1_controller"]
+[ext_resource type="Shader" path="res://shaders/gradient_background.gdshader" id="2_gradient"]
+[ext_resource type="FontFile" path="res://assets/fonts/Bungee-Regular.ttf" id="3_bungee"]
+
+[sub_resource type="ShaderMaterial" id="shader_material_gradient"]
+shader = ExtResource("2_gradient")
+shader_parameter/top_color = Color(0.1, 0.15, 0.3, 1.0)
+shader_parameter/bottom_color = Color(0.15, 0.2, 0.4, 1.0)
+
+[node name="ModeSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_controller")
+
+[node name="Background" type="ColorRect" parent="."]
+material = SubResource("shader_material_gradient")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.117647, 0.227451, 0.372549, 1)
+
+[node name="GameContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = -40.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="TitleLabel" type="Label" parent="GameContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+theme_override_fonts/font = ExtResource("3_bungee")
+theme_override_font_sizes/font_size = 36
+text = "SELECT GAME MODE"
+horizontal_alignment = 1
+
+[node name="ModeButtons" type="VBoxContainer" parent="GameContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="SingleMatchButton" type="Button" parent="GameContainer/ModeButtons"]
+custom_minimum_size = Vector2(400, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "⚔️  SINGLE MATCH
+Best of 3 vs AI"
+
+[node name="TournamentButton" type="Button" parent="GameContainer/ModeButtons"]
+custom_minimum_size = Vector2(400, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "🏆  TOURNAMENT
+8 or 16 Player Bracket"
+
+[node name="SurvivalButton" type="Button" parent="GameContainer/ModeButtons"]
+custom_minimum_size = Vector2(400, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "💪  SURVIVAL
+How long can you last?"
+
+[node name="HotSeatButton" type="Button" parent="GameContainer/ModeButtons"]
+custom_minimum_size = Vector2(400, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "👥  HOT SEAT
+Local 2-Player"
+
+[node name="TournamentConfig" type="VBoxContainer" parent="GameContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="SizeLabel" type="Label" parent="GameContainer/TournamentConfig"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Tournament Size:"
+horizontal_alignment = 1
+
+[node name="SizeOption" type="OptionButton" parent="GameContainer/TournamentConfig"]
+layout_mode = 2
+size_flags_horizontal = 4
+item_count = 2
+popup/item_0/text = "8 Players"
+popup/item_1/text = "16 Players"
+
+[node name="HotSeatConfig" type="VBoxContainer" parent="GameContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Player1Label" type="Label" parent="GameContainer/HotSeatConfig"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Player 1 Name:"
+horizontal_alignment = 1
+
+[node name="Player1Input" type="LineEdit" parent="GameContainer/HotSeatConfig"]
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Player 1"
+placeholder_text = "Enter name..."
+alignment = 1
+
+[node name="Player2Label" type="Label" parent="GameContainer/HotSeatConfig"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Player 2 Name:"
+horizontal_alignment = 1
+
+[node name="Player2Input" type="LineEdit" parent="GameContainer/HotSeatConfig"]
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Player 2"
+placeholder_text = "Enter name..."
+alignment = 1
+
+[node name="StartButton" type="Button" parent="GameContainer/HotSeatConfig"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "START GAME"
+
+[node name="BackButton" type="Button" parent="GameContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "← BACK"

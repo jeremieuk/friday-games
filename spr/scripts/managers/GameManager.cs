@@ -2,6 +2,7 @@ using Godot;
 using Godot.Collections;
 using SprGame.Core;
 using SprGame.AI;
+using SPR;
 
 namespace SprGame.Managers;
 
@@ -22,8 +23,10 @@ public partial class GameManager : Node {
     }
 
     private GameState _currentState = GameState.MainMenu;
+    private GameMode _currentMode = GameMode.SingleMatch;
     private ScoreTracker? _scoreTracker;
     private AIOpponent? _aiOpponent;
+    private IModeController? _modeController;
 
     /// <summary>
     /// Gets the current game state
@@ -31,13 +34,68 @@ public partial class GameManager : Node {
     public GameState GetCurrentState() => _currentState;
 
     /// <summary>
+    /// Gets the current game mode
+    /// </summary>
+    public GameMode GetCurrentMode() => _currentMode;
+
+    /// <summary>
+    /// Gets the current mode controller (if any)
+    /// </summary>
+    public IModeController? GetModeController() => _modeController;
+
+    /// <summary>
     /// Starts a new Single Match game.
     /// Resets scores and transitions to Playing state.
     /// </summary>
     public void StartSingleMatch() {
         _currentState = GameState.Playing;
+        _currentMode = GameMode.SingleMatch;
         _scoreTracker = new ScoreTracker();
         _aiOpponent = new AIOpponent();
+        _modeController = null;
+    }
+
+    /// <summary>
+    /// Starts a Tournament game with the specified bracket size.
+    /// </summary>
+    /// <param name="bracketSize">Number of players in bracket (8 or 16)</param>
+    public void StartTournament(int bracketSize = 8) {
+        _currentState = GameState.Playing;
+        _currentMode = GameMode.Tournament;
+        _scoreTracker = new ScoreTracker();
+        _aiOpponent = new AIOpponent();
+        var config = GameConfig.Tournament(bracketSize);
+        _modeController = new TournamentController();
+        _modeController.Initialize(config);
+    }
+
+    /// <summary>
+    /// Starts a Survival game with the specified starting HP.
+    /// </summary>
+    /// <param name="startingHp">Starting HP (default 10)</param>
+    public void StartSurvival(int startingHp = 10) {
+        _currentState = GameState.Playing;
+        _currentMode = GameMode.Survival;
+        _scoreTracker = new ScoreTracker();
+        _aiOpponent = new AIOpponent();
+        var config = GameConfig.Survival(startingHp);
+        _modeController = new SurvivalController();
+        _modeController.Initialize(config);
+    }
+
+    /// <summary>
+    /// Starts a Hot Seat (local multiplayer) game.
+    /// </summary>
+    /// <param name="player1Name">First player's name</param>
+    /// <param name="player2Name">Second player's name</param>
+    public void StartHotSeat(string player1Name = "Player 1", string player2Name = "Player 2") {
+        _currentState = GameState.Playing;
+        _currentMode = GameMode.HotSeat;
+        _scoreTracker = new ScoreTracker();
+        _aiOpponent = null; // No AI in hot seat mode
+        var config = GameConfig.HotSeat(player1Name, player2Name);
+        _modeController = new HotSeatController();
+        _modeController.Initialize(config);
     }
 
     /// <summary>

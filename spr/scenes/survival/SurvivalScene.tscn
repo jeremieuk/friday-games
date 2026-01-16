@@ -1,0 +1,226 @@
+[gd_scene load_steps=4 format=3 uid="uid://csurvival_scene_001"]
+
+[ext_resource type="Script" path="res://scripts/ui/SurvivalSceneController.cs" id="1_controller"]
+[ext_resource type="Shader" path="res://shaders/gradient_background.gdshader" id="2_gradient"]
+[ext_resource type="FontFile" path="res://assets/fonts/Bungee-Regular.ttf" id="3_bungee"]
+
+[sub_resource type="ShaderMaterial" id="shader_material_gradient"]
+shader = ExtResource("2_gradient")
+shader_parameter/top_color = Color(0.2, 0.1, 0.1, 1.0)
+shader_parameter/bottom_color = Color(0.3, 0.15, 0.15, 1.0)
+
+[node name="SurvivalScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_controller")
+
+[node name="Background" type="ColorRect" parent="."]
+material = SubResource("shader_material_gradient")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = -40.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+
+[node name="TopSection" type="VBoxContainer" parent="GameContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="GameContainer/TopSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+theme_override_fonts/font = ExtResource("3_bungee")
+theme_override_font_sizes/font_size = 36
+text = "SURVIVAL MODE"
+horizontal_alignment = 1
+
+[node name="HPLabel" type="Label" parent="GameContainer/TopSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 1, 0.3, 1)
+theme_override_font_sizes/font_size = 28
+text = "HP: 10/10"
+horizontal_alignment = 1
+
+[node name="HPBar" type="ProgressBar" parent="GameContainer/TopSection"]
+custom_minimum_size = Vector2(400, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+value = 100.0
+show_percentage = false
+
+[node name="DefeatedLabel" type="Label" parent="GameContainer/TopSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "Opponents Defeated: 0"
+horizontal_alignment = 1
+
+[node name="HighScoreLabel" type="Label" parent="GameContainer/TopSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "Best: 0"
+horizontal_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="GameContainer/TopSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "You: 0 | AI: 0"
+horizontal_alignment = 1
+
+[node name="MiddleSection" type="CenterContainer" parent="GameContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ContentContainer" type="VBoxContainer" parent="GameContainer/MiddleSection"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="InstructionLabel" type="Label" parent="GameContainer/MiddleSection/ContentContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "Make your choice:"
+horizontal_alignment = 1
+
+[node name="ChoiceButtons" type="HBoxContainer" parent="GameContainer/MiddleSection/ContentContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="RockButton" type="Button" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "🪨
+ROCK"
+
+[node name="PaperButton" type="Button" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "📄
+PAPER"
+
+[node name="ScissorsButton" type="Button" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "✂️
+SCISSORS"
+
+[node name="ResultLabel" type="Label" parent="GameContainer/MiddleSection/ContentContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = " "
+horizontal_alignment = 1
+
+[node name="BottomSection" type="VBoxContainer" parent="GameContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 2
+
+[node name="ContinueButton" type="Button" parent="GameContainer/BottomSection"]
+visible = false
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "NEXT OPPONENT →"
+
+[node name="PlayAgainButton" type="Button" parent="GameContainer/BottomSection"]
+visible = false
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "TRY AGAIN"
+
+[node name="BackButton" type="Button" parent="GameContainer/BottomSection"]
+custom_minimum_size = Vector2(200, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 16
+text = "← BACK"
+
+[node name="RevealOverlay" type="CanvasLayer" parent="."]
+layer = 10
+visible = false
+
+[node name="Backdrop" type="ColorRect" parent="RevealOverlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="RevealCenter" type="CenterContainer" parent="RevealOverlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RevealSection" type="HBoxContainer" parent="RevealOverlay/RevealCenter"]
+layout_mode = 2
+theme_override_constants/separation = 150
+alignment = 1
+
+[node name="PlayerChoiceContainer" type="VBoxContainer" parent="RevealOverlay/RevealCenter/RevealSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+visible = false
+
+[node name="PlayerChoiceLabel" type="Label" parent="RevealOverlay/RevealCenter/RevealSection/PlayerChoiceContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "YOU CHOSE:"
+horizontal_alignment = 1
+
+[node name="PlayerChoiceEmoji" type="Label" parent="RevealOverlay/RevealCenter/RevealSection/PlayerChoiceContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "🪨"
+horizontal_alignment = 1
+
+[node name="AIChoiceContainer" type="VBoxContainer" parent="RevealOverlay/RevealCenter/RevealSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+visible = false
+
+[node name="AIChoiceLabel" type="Label" parent="RevealOverlay/RevealCenter/RevealSection/AIChoiceContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "AI CHOSE:"
+horizontal_alignment = 1
+
+[node name="AIChoiceEmoji" type="Label" parent="RevealOverlay/RevealCenter/RevealSection/AIChoiceContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "✂️"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="GameContainer/BottomSection/BackButton" to="." method="_OnBackButtonPressed"]

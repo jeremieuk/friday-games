@@ -1,0 +1,23 @@
+{
+  "dirs": ["res://tests/unit/"],
+  "disable_colors": false,
+  "double_strategy": "partial",
+  "include_subdirs": true,
+  "inner_class": "",
+  "junit_xml_file": "",
+  "junit_xml_timestamp": false,
+  "log_level": 1,
+  "opacity": 100,
+  "post_run_script": "",
+  "pre_run_script": "",
+  "prefix": "test_",
+  "selected": "",
+  "should_exit": false,
+  "should_exit_on_success": false,
+  "should_maximize": false,
+  "compact_mode": false,
+  "hide_orphans": false,
+  "suffix": ".gd",
+  "tests": [],
+  "unit_test_name": ""
+}

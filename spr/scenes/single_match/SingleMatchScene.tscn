@@ -1,0 +1,429 @@
+[gd_scene load_steps=16 format=3 uid="uid://b7x2k8f3ym9wp"]
+
+[ext_resource type="Script" path="res://scripts/ui/SingleMatchController.cs" id="1_controller"]
+
+[sub_resource type="StyleBoxFlat" id="stylebox_choice_normal"]
+bg_color = Color(1.0, 0.9, 0.4, 1.0)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.0, 0.0, 0.0, 0.3)
+shadow_size = 4
+shadow_offset = Vector2(0.0, 2.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.7, 0.2, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_choice_hover"]
+bg_color = Color(1.0, 0.95, 0.5, 1.0)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.0, 0.0, 0.0, 0.4)
+shadow_size = 6
+shadow_offset = Vector2(0.0, 3.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.8, 0.3, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_choice_pressed"]
+bg_color = Color(0.9, 0.8, 0.3, 1.0)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.0, 0.0, 0.0, 0.5)
+shadow_size = 2
+shadow_offset = Vector2(0.0, 1.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7, 0.6, 0.2, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_choice_disabled"]
+bg_color = Color(0.5, 0.5, 0.5, 0.5)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.0, 0.0, 0.0, 0.2)
+shadow_size = 2
+shadow_offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_play_again_normal"]
+bg_color = Color(0.3, 0.8, 0.4, 1.0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.0, 0.0, 0.0, 0.3)
+shadow_size = 3
+shadow_offset = Vector2(0.0, 2.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_play_again_hover"]
+bg_color = Color(0.4, 0.9, 0.5, 1.0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.0, 0.0, 0.0, 0.4)
+shadow_size = 4
+shadow_offset = Vector2(0.0, 3.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_play_again_pressed"]
+bg_color = Color(0.2, 0.7, 0.3, 1.0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.0, 0.0, 0.0, 0.5)
+shadow_size = 2
+shadow_offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_back_normal"]
+bg_color = Color(0.6, 0.6, 0.6, 1.0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.0, 0.0, 0.0, 0.3)
+shadow_size = 3
+shadow_offset = Vector2(0.0, 2.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_back_hover"]
+bg_color = Color(0.7, 0.7, 0.7, 1.0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.0, 0.0, 0.0, 0.4)
+shadow_size = 4
+shadow_offset = Vector2(0.0, 3.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_back_pressed"]
+bg_color = Color(0.5, 0.5, 0.5, 1.0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.0, 0.0, 0.0, 0.5)
+shadow_size = 2
+shadow_offset = Vector2(0.0, 1.0)
+
+[sub_resource type="Curve" id="curve_sparkle_scale"]
+_data = [Vector2(0.0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.5, 1.0), 0.0, 0.0, 0, 0, Vector2(1.0, 0.0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="gradient_rock_debris"]
+offsets = PackedFloat32Array(0.0, 0.5, 1.0)
+colors = PackedColorArray(0.4, 0.35, 0.3, 0.0, 0.5, 0.45, 0.4, 1.0, 0.3, 0.25, 0.2, 0.0)
+
+[sub_resource type="Gradient" id="gradient_paper_flutter"]
+offsets = PackedFloat32Array(0.0, 0.5, 1.0)
+colors = PackedColorArray(1.0, 1.0, 1.0, 0.0, 0.95, 0.95, 1.0, 1.0, 0.9, 0.9, 0.95, 0.0)
+
+[sub_resource type="Gradient" id="gradient_scissors_sparkle"]
+offsets = PackedFloat32Array(0.0, 0.5, 1.0)
+colors = PackedColorArray(0.7, 0.8, 0.9, 0.0, 0.85, 0.9, 0.95, 1.0, 0.6, 0.7, 0.8, 0.0)
+
+[sub_resource type="Gradient" id="gradient_confetti"]
+offsets = PackedFloat32Array(0.0, 1.0)
+colors = PackedColorArray(1.0, 1.0, 1.0, 1.0, 1.0, 0.9, 0.4, 0.0)
+
+[node name="SingleMatchScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_controller")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.117647, 0.227451, 0.372549, 1)
+
+[node name="GameContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = -40.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 40
+
+[node name="TopSection" type="VBoxContainer" parent="GameContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="GameContainer/TopSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 0.843137, 0.0, 1.0)
+theme_override_font_sizes/font_size = 36
+text = "SINGLE MATCH"
+horizontal_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="GameContainer/TopSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1.0)
+theme_override_font_sizes/font_size = 24
+text = "You: 0 | AI: 0"
+horizontal_alignment = 1
+
+[node name="MiddleSection" type="CenterContainer" parent="GameContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ContentContainer" type="VBoxContainer" parent="GameContainer/MiddleSection"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="InstructionLabel" type="Label" parent="GameContainer/MiddleSection/ContentContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1.0)
+theme_override_font_sizes/font_size = 20
+text = "Make your choice:"
+horizontal_alignment = 1
+
+[node name="ChoiceButtons" type="HBoxContainer" parent="GameContainer/MiddleSection/ContentContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="RockButton" type="Button" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons"]
+custom_minimum_size = Vector2(180.0, 180.0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("stylebox_choice_normal")
+theme_override_styles/hover = SubResource("stylebox_choice_hover")
+theme_override_styles/pressed = SubResource("stylebox_choice_pressed")
+theme_override_styles/disabled = SubResource("stylebox_choice_disabled")
+theme_override_colors/font_color = Color(0.15, 0.25, 0.4, 1.0)
+theme_override_font_sizes/font_size = 42
+text = "🪨
+ROCK"
+
+[node name="RockDebris" type="CPUParticles2D" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons/RockButton"]
+position = Vector2(90.0, 90.0)
+emitting = false
+amount = 15
+lifetime = 0.8
+one_shot = false
+explosiveness = 0.6
+randomness = 0.4
+emission_shape = 1
+emission_sphere_radius = 70.0
+direction = Vector2(0.0, 1.0)
+spread = 120.0
+gravity = Vector2(0.0, 200.0)
+initial_velocity_min = 30.0
+initial_velocity_max = 60.0
+scale_amount_min = 3.0
+scale_amount_max = 6.0
+scale_amount_curve = SubResource("curve_sparkle_scale")
+color_ramp = SubResource("gradient_rock_debris")
+
+[node name="PaperButton" type="Button" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons"]
+custom_minimum_size = Vector2(180.0, 180.0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("stylebox_choice_normal")
+theme_override_styles/hover = SubResource("stylebox_choice_hover")
+theme_override_styles/pressed = SubResource("stylebox_choice_pressed")
+theme_override_styles/disabled = SubResource("stylebox_choice_disabled")
+theme_override_colors/font_color = Color(0.15, 0.25, 0.4, 1.0)
+theme_override_font_sizes/font_size = 42
+text = "📄
+PAPER"
+
+[node name="PaperFlutter" type="CPUParticles2D" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons/PaperButton"]
+position = Vector2(90.0, 90.0)
+emitting = false
+amount = 25
+lifetime = 1.0
+one_shot = false
+explosiveness = 0.3
+randomness = 0.6
+emission_shape = 1
+emission_sphere_radius = 80.0
+direction = Vector2(0.0, -1.0)
+spread = 90.0
+gravity = Vector2(0.0, 50.0)
+initial_velocity_min = 15.0
+initial_velocity_max = 40.0
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+scale_amount_min = 2.0
+scale_amount_max = 5.0
+scale_amount_curve = SubResource("curve_sparkle_scale")
+color_ramp = SubResource("gradient_paper_flutter")
+
+[node name="ScissorsButton" type="Button" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons"]
+custom_minimum_size = Vector2(180.0, 180.0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("stylebox_choice_normal")
+theme_override_styles/hover = SubResource("stylebox_choice_hover")
+theme_override_styles/pressed = SubResource("stylebox_choice_pressed")
+theme_override_styles/disabled = SubResource("stylebox_choice_disabled")
+theme_override_colors/font_color = Color(0.15, 0.25, 0.4, 1.0)
+theme_override_font_sizes/font_size = 42
+text = "✂️
+SCISSORS"
+
+[node name="ScissorsSparkle" type="CPUParticles2D" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons/ScissorsButton"]
+position = Vector2(90.0, 90.0)
+emitting = false
+amount = 20
+lifetime = 0.6
+one_shot = false
+explosiveness = 0.9
+randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 75.0
+direction = Vector2(0.0, -1.0)
+spread = 180.0
+gravity = Vector2(0.0, 0.0)
+initial_velocity_min = 25.0
+initial_velocity_max = 55.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("curve_sparkle_scale")
+color_ramp = SubResource("gradient_scissors_sparkle")
+
+[node name="ResultLabel" type="Label" parent="GameContainer/MiddleSection/ContentContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 0.843137, 0.0, 1.0)
+theme_override_font_sizes/font_size = 28
+text = " "
+horizontal_alignment = 1
+
+[node name="BottomSection" type="VBoxContainer" parent="GameContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 2
+
+[node name="PlayAgainButton" type="Button" parent="GameContainer/BottomSection"]
+custom_minimum_size = Vector2(300.0, 60.0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("stylebox_play_again_normal")
+theme_override_styles/hover = SubResource("stylebox_play_again_hover")
+theme_override_styles/pressed = SubResource("stylebox_play_again_pressed")
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1.0)
+theme_override_font_sizes/font_size = 24
+text = "PLAY AGAIN"
+visible = false
+
+[node name="BackButton" type="Button" parent="GameContainer/BottomSection"]
+custom_minimum_size = Vector2(200.0, 50.0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("stylebox_back_normal")
+theme_override_styles/hover = SubResource("stylebox_back_hover")
+theme_override_styles/pressed = SubResource("stylebox_back_pressed")
+theme_override_colors/font_color = Color(0.15, 0.15, 0.15, 1.0)
+theme_override_font_sizes/font_size = 18
+text = "← BACK TO MENU"
+
+[node name="RevealOverlay" type="CanvasLayer" parent="."]
+layer = 10
+visible = false
+
+[node name="VictoryConfetti" type="CPUParticles2D" parent="RevealOverlay"]
+position = Vector2(640.0, 200.0)
+emitting = false
+amount = 100
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+randomness = 0.5
+emission_shape = 1
+emission_sphere_radius = 50.0
+direction = Vector2(0.0, 1.0)
+spread = 45.0
+gravity = Vector2(0.0, 300.0)
+initial_velocity_min = 200.0
+initial_velocity_max = 400.0
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+scale_amount_min = 3.0
+scale_amount_max = 8.0
+color_ramp = SubResource("gradient_confetti")
+
+[node name="Backdrop" type="ColorRect" parent="RevealOverlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0, 0.0, 0.0, 0.7)
+
+[node name="RevealCenter" type="CenterContainer" parent="RevealOverlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RevealSection" type="HBoxContainer" parent="RevealOverlay/RevealCenter"]
+layout_mode = 2
+theme_override_constants/separation = 150
+alignment = 1
+
+[node name="PlayerChoiceContainer" type="VBoxContainer" parent="RevealOverlay/RevealCenter/RevealSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+visible = false
+
+[node name="PlayerChoiceLabel" type="Label" parent="RevealOverlay/RevealCenter/RevealSection/PlayerChoiceContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1.0)
+theme_override_font_sizes/font_size = 18
+text = "YOU CHOSE:"
+horizontal_alignment = 1
+
+[node name="PlayerChoiceEmoji" type="Label" parent="RevealOverlay/RevealCenter/RevealSection/PlayerChoiceContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 0.843137, 0.0, 1.0)
+theme_override_font_sizes/font_size = 96
+text = "🪨"
+horizontal_alignment = 1
+
+[node name="AIChoiceContainer" type="VBoxContainer" parent="RevealOverlay/RevealCenter/RevealSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+visible = false
+
+[node name="AIChoiceLabel" type="Label" parent="RevealOverlay/RevealCenter/RevealSection/AIChoiceContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 1.0, 1.0, 1.0)
+theme_override_font_sizes/font_size = 18
+text = "AI CHOSE:"
+horizontal_alignment = 1
+
+[node name="AIChoiceEmoji" type="Label" parent="RevealOverlay/RevealCenter/RevealSection/AIChoiceContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 0.843137, 0.0, 1.0)
+theme_override_font_sizes/font_size = 96
+text = "✂️"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="GameContainer/MiddleSection/ContentContainer/ChoiceButtons/RockButton" to="." method="_OnRockButtonPressed"]
+[connection signal="pressed" from="GameContainer/MiddleSection/ContentContainer/ChoiceButtons/PaperButton" to="." method="_OnPaperButtonPressed"]
+[connection signal="pressed" from="GameContainer/MiddleSection/ContentContainer/ChoiceButtons/ScissorsButton" to="." method="_OnScissorsButtonPressed"]
+[connection signal="pressed" from="GameContainer/BottomSection/PlayAgainButton" to="." method="_OnPlayAgainButtonPressed"]
+[connection signal="pressed" from="GameContainer/BottomSection/BackButton" to="." method="_OnBackButtonPressed"]

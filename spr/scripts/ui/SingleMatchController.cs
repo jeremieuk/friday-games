@@ -36,10 +36,10 @@ public partial class SingleMatchController : Control {
     // Animation support
     private Tween? _currentTween;
 
-    // Particle effects
-    private CpuParticles2D? _rockDebris;
-    private CpuParticles2D? _paperFlutter;
-    private CpuParticles2D? _scissorsSparkle;
+    // Clash particle effects
+    private CpuParticles2D? _scissorsShatter;
+    private CpuParticles2D? _paperWrap;
+    private CpuParticles2D? _paperShred;
     private CpuParticles2D? _victoryConfetti;
 
     public override void _Ready() {
@@ -59,10 +59,10 @@ public partial class SingleMatchController : Control {
         _aiChoiceContainer = GetNode<VBoxContainer>("RevealOverlay/RevealCenter/RevealSection/AIChoiceContainer");
         _aiChoiceEmoji = GetNode<Label>("RevealOverlay/RevealCenter/RevealSection/AIChoiceContainer/AIChoiceEmoji");
 
-        // Get particle effect references
-        _rockDebris = GetNode<CpuParticles2D>("GameContainer/MiddleSection/ContentContainer/ChoiceButtons/RockButton/RockDebris");
-        _paperFlutter = GetNode<CpuParticles2D>("GameContainer/MiddleSection/ContentContainer/ChoiceButtons/PaperButton/PaperFlutter");
-        _scissorsSparkle = GetNode<CpuParticles2D>("GameContainer/MiddleSection/ContentContainer/ChoiceButtons/ScissorsButton/ScissorsSparkle");
+        // Get clash particle effect references
+        _scissorsShatter = GetNode<CpuParticles2D>("RevealOverlay/ClashParticles/ScissorsShatter");
+        _paperWrap = GetNode<CpuParticles2D>("RevealOverlay/ClashParticles/PaperWrap");
+        _paperShred = GetNode<CpuParticles2D>("RevealOverlay/ClashParticles/PaperShred");
         _victoryConfetti = GetNode<CpuParticles2D>("RevealOverlay/VictoryConfetti");
 
         // Create and start game manager
@@ -72,33 +72,13 @@ public partial class SingleMatchController : Control {
 
         UpdateScoreDisplay();
 
-        // Connect button hover signals for animations and particles
-        _rockButton.MouseEntered += () => {
-            AnimateButtonHover(_rockButton);
-            if (_rockDebris != null) _rockDebris.Emitting = true;
-        };
-        _rockButton.MouseExited += () => {
-            AnimateButtonNormal(_rockButton);
-            if (_rockDebris != null) _rockDebris.Emitting = false;
-        };
-
-        _paperButton.MouseEntered += () => {
-            AnimateButtonHover(_paperButton);
-            if (_paperFlutter != null) _paperFlutter.Emitting = true;
-        };
-        _paperButton.MouseExited += () => {
-            AnimateButtonNormal(_paperButton);
-            if (_paperFlutter != null) _paperFlutter.Emitting = false;
-        };
-
-        _scissorsButton.MouseEntered += () => {
-            AnimateButtonHover(_scissorsButton);
-            if (_scissorsSparkle != null) _scissorsSparkle.Emitting = true;
-        };
-        _scissorsButton.MouseExited += () => {
-            AnimateButtonNormal(_scissorsButton);
-            if (_scissorsSparkle != null) _scissorsSparkle.Emitting = false;
-        };
+        // Connect button hover signals for animations only
+        _rockButton.MouseEntered += () => AnimateButtonHover(_rockButton);
+        _rockButton.MouseExited += () => AnimateButtonNormal(_rockButton);
+        _paperButton.MouseEntered += () => AnimateButtonHover(_paperButton);
+        _paperButton.MouseExited += () => AnimateButtonNormal(_paperButton);
+        _scissorsButton.MouseEntered += () => AnimateButtonHover(_scissorsButton);
+        _scissorsButton.MouseExited += () => AnimateButtonNormal(_scissorsButton);
 
         // Start gameplay music
         GetNode<AudioManager>("/root/AudioManager").PlayMusic("music_gameplay");
@@ -266,6 +246,12 @@ public partial class SingleMatchController : Control {
         await ToSignal(GetTree().CreateTimer(AI_REVEAL_DELAY),
                        SceneTreeTimer.SignalName.Timeout);
 
+        // Stage 2.5: Clash Animation (skip for draws)
+        if (result != GameLogic.Result.Draw) {
+            TriggerClashAnimation(playerChoice, aiChoice, result);
+            await ToSignal(GetTree().CreateTimer(0.8f), SceneTreeTimer.SignalName.Timeout);
+        }
+
         // Stage 3: Show result
         UpdateScoreDisplay();
         DisplayRoundResult(result, isMatchComplete);
@@ -386,5 +372,68 @@ public partial class SingleMatchController : Control {
 
     private void _OnBackButtonPressed() {
         GetTree().ChangeSceneToFile("res://scenes/main_menu/MainMenu.tscn");
+    }
+
+    /// <summary>
+    /// Triggers the clash animation showing the winning choice defeating the losing choice.
+    /// </summary>
+    private void TriggerClashAnimation(
+        GameLogic.Choice playerChoice,
+        GameLogic.Choice aiChoice,
+        GameLogic.Result result) {
+
+        // Determine which particle to trigger based on result
+        CpuParticles2D? particleToEmit = null;
+        Vector2 emitPosition;
+
+        if (result == GameLogic.Result.PlayerWins) {
+            // Player won - animate AI's losing choice
+            emitPosition = GetAIChoicePosition();
+            particleToEmit = GetDefeatParticle(aiChoice, playerChoice);
+        } else {
+            // AI won - animate player's losing choice
+            emitPosition = GetPlayerChoicePosition();
+            particleToEmit = GetDefeatParticle(playerChoice, aiChoice);
+        }
+
+        if (particleToEmit != null) {
+            particleToEmit.Position = emitPosition;
+            particleToEmit.Emitting = true;
+        }
+    }
+
+    /// <summary>
+    /// Gets the appropriate defeat particle effect based on what choice lost and what defeated it.
+    /// </summary>
+    private CpuParticles2D? GetDefeatParticle(
+        GameLogic.Choice losingChoice,
+        GameLogic.Choice winningChoice) {
+
+        return (losingChoice, winningChoice) switch {
+            (GameLogic.Choice.Scissors, GameLogic.Choice.Rock) => _scissorsShatter,
+            (GameLogic.Choice.Rock, GameLogic.Choice.Paper) => _paperWrap,
+            (GameLogic.Choice.Paper, GameLogic.Choice.Scissors) => _paperShred,
+            _ => null
+        };
+    }
+
+    /// <summary>
+    /// Gets the global position of the player's choice emoji for particle positioning.
+    /// </summary>
+    private Vector2 GetPlayerChoicePosition() {
+        if (_playerChoiceEmoji != null) {
+            return _playerChoiceEmoji.GlobalPosition + _playerChoiceEmoji.Size / 2;
+        }
+        return Vector2.Zero;
+    }
+
+    /// <summary>
+    /// Gets the global position of the AI's choice emoji for particle positioning.
+    /// </summary>
+    private Vector2 GetAIChoicePosition() {
+        if (_aiChoiceEmoji != null) {
+            return _aiChoiceEmoji.GlobalPosition + _aiChoiceEmoji.Size / 2;
+        }
+        return Vector2.Zero;
     }
 }

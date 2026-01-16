@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://dmyv3h4xjm7r3"]
+[gd_scene load_steps=5 format=3 uid="uid://dmyv3h4xjm7r3"]
 
 [ext_resource type="Script" path="res://scenes/main_menu/MainMenuController.gd" id="1_main_menu"]
+[ext_resource type="Shader" path="res://shaders/gradient_background.gdshader" id="2_gradient"]
+[ext_resource type="FontFile" path="res://assets/fonts/Bungee-Regular.ttf" id="3_bungee"]
+
+[sub_resource type="ShaderMaterial" id="shader_material_gradient"]
+shader = ExtResource("2_gradient")
+shader_parameter/top_color = Color(0.1, 0.15, 0.3, 1.0)
+shader_parameter/bottom_color = Color(0.15, 0.2, 0.4, 1.0)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -12,6 +19,7 @@ grow_vertical = 2
 script = ExtResource("1_main_menu")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("shader_material_gradient")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,6 +43,7 @@ theme_override_constants/separation = 40
 [node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+theme_override_fonts/font = ExtResource("3_bungee")
 theme_override_font_sizes/font_size = 48
 text = "SCISSORS PAPER ROCK"
 horizontal_alignment = 1

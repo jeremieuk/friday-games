@@ -1,9 +1,16 @@
-[gd_scene load_steps=16 format=3 uid="uid://b7x2k8f3ym9wp"]
+[gd_scene load_steps=25 format=3 uid="uid://b7x2k8f3ym9wp"]
 
 [ext_resource type="Script" path="res://scripts/ui/SingleMatchController.cs" id="1_controller"]
+[ext_resource type="Shader" path="res://shaders/gradient_background.gdshader" id="2_gradient"]
+[ext_resource type="FontFile" path="res://assets/fonts/Bungee-Regular.ttf" id="3_bungee"]
 
-[sub_resource type="StyleBoxFlat" id="stylebox_choice_normal"]
-bg_color = Color(1.0, 0.9, 0.4, 1.0)
+[sub_resource type="ShaderMaterial" id="shader_material_gradient"]
+shader = ExtResource("2_gradient")
+shader_parameter/top_color = Color(0.08, 0.12, 0.25, 1.0)
+shader_parameter/bottom_color = Color(0.12, 0.18, 0.28, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_rock_normal"]
+bg_color = Color(0.45, 0.4, 0.35, 1.0)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
@@ -15,10 +22,10 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.8, 0.7, 0.2, 1.0)
+border_color = Color(0.3, 0.25, 0.2, 1.0)
 
-[sub_resource type="StyleBoxFlat" id="stylebox_choice_hover"]
-bg_color = Color(1.0, 0.95, 0.5, 1.0)
+[sub_resource type="StyleBoxFlat" id="stylebox_rock_hover"]
+bg_color = Color(0.55, 0.5, 0.45, 1.0)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
@@ -30,10 +37,10 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.9, 0.8, 0.3, 1.0)
+border_color = Color(0.3, 0.25, 0.2, 1.0)
 
-[sub_resource type="StyleBoxFlat" id="stylebox_choice_pressed"]
-bg_color = Color(0.9, 0.8, 0.3, 1.0)
+[sub_resource type="StyleBoxFlat" id="stylebox_rock_pressed"]
+bg_color = Color(0.35, 0.3, 0.25, 1.0)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
@@ -45,7 +52,7 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.7, 0.6, 0.2, 1.0)
+border_color = Color(0.3, 0.25, 0.2, 1.0)
 
 [sub_resource type="StyleBoxFlat" id="stylebox_choice_disabled"]
 bg_color = Color(0.5, 0.5, 0.5, 0.5)
@@ -56,6 +63,96 @@ corner_radius_bottom_left = 12
 shadow_color = Color(0.0, 0.0, 0.0, 0.2)
 shadow_size = 2
 shadow_offset = Vector2(0.0, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_paper_normal"]
+bg_color = Color(0.9, 0.92, 0.95, 1.0)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.0, 0.0, 0.0, 0.3)
+shadow_size = 4
+shadow_offset = Vector2(0.0, 2.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.65, 0.7, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_paper_hover"]
+bg_color = Color(0.95, 0.96, 0.98, 1.0)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.0, 0.0, 0.0, 0.4)
+shadow_size = 6
+shadow_offset = Vector2(0.0, 3.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.65, 0.7, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_paper_pressed"]
+bg_color = Color(0.75, 0.78, 0.82, 1.0)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.0, 0.0, 0.0, 0.5)
+shadow_size = 2
+shadow_offset = Vector2(0.0, 1.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.65, 0.7, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_scissors_normal"]
+bg_color = Color(0.65, 0.7, 0.75, 1.0)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.0, 0.0, 0.0, 0.3)
+shadow_size = 4
+shadow_offset = Vector2(0.0, 2.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.45, 0.5, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_scissors_hover"]
+bg_color = Color(0.75, 0.8, 0.85, 1.0)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.0, 0.0, 0.0, 0.4)
+shadow_size = 6
+shadow_offset = Vector2(0.0, 3.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.45, 0.5, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="stylebox_scissors_pressed"]
+bg_color = Color(0.5, 0.55, 0.6, 1.0)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.0, 0.0, 0.0, 0.5)
+shadow_size = 2
+shadow_offset = Vector2(0.0, 1.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.45, 0.5, 1.0)
 
 [sub_resource type="StyleBoxFlat" id="stylebox_play_again_normal"]
 bg_color = Color(0.3, 0.8, 0.4, 1.0)
@@ -147,6 +244,7 @@ grow_vertical = 2
 script = ExtResource("1_controller")
 
 [node name="Background" type="ColorRect" parent="."]
+material = SubResource("shader_material_gradient")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -175,6 +273,7 @@ theme_override_constants/separation = 20
 [node name="TitleLabel" type="Label" parent="GameContainer/TopSection"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1.0, 0.843137, 0.0, 1.0)
+theme_override_fonts/font = ExtResource("3_bungee")
 theme_override_font_sizes/font_size = 36
 text = "SINGLE MATCH"
 horizontal_alignment = 1
@@ -209,100 +308,38 @@ alignment = 1
 [node name="RockButton" type="Button" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons"]
 custom_minimum_size = Vector2(180.0, 180.0)
 layout_mode = 2
-theme_override_styles/normal = SubResource("stylebox_choice_normal")
-theme_override_styles/hover = SubResource("stylebox_choice_hover")
-theme_override_styles/pressed = SubResource("stylebox_choice_pressed")
+theme_override_styles/normal = SubResource("stylebox_rock_normal")
+theme_override_styles/hover = SubResource("stylebox_rock_hover")
+theme_override_styles/pressed = SubResource("stylebox_rock_pressed")
 theme_override_styles/disabled = SubResource("stylebox_choice_disabled")
-theme_override_colors/font_color = Color(0.15, 0.25, 0.4, 1.0)
+theme_override_colors/font_color = Color(1.0, 0.95, 0.85, 1.0)
 theme_override_font_sizes/font_size = 42
 text = "🪨
 ROCK"
 
-[node name="RockDebris" type="CPUParticles2D" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons/RockButton"]
-position = Vector2(90.0, 90.0)
-emitting = false
-amount = 15
-lifetime = 0.8
-one_shot = false
-explosiveness = 0.6
-randomness = 0.4
-emission_shape = 1
-emission_sphere_radius = 70.0
-direction = Vector2(0.0, 1.0)
-spread = 120.0
-gravity = Vector2(0.0, 200.0)
-initial_velocity_min = 30.0
-initial_velocity_max = 60.0
-scale_amount_min = 3.0
-scale_amount_max = 6.0
-scale_amount_curve = SubResource("curve_sparkle_scale")
-color_ramp = SubResource("gradient_rock_debris")
-
 [node name="PaperButton" type="Button" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons"]
 custom_minimum_size = Vector2(180.0, 180.0)
 layout_mode = 2
-theme_override_styles/normal = SubResource("stylebox_choice_normal")
-theme_override_styles/hover = SubResource("stylebox_choice_hover")
-theme_override_styles/pressed = SubResource("stylebox_choice_pressed")
+theme_override_styles/normal = SubResource("stylebox_paper_normal")
+theme_override_styles/hover = SubResource("stylebox_paper_hover")
+theme_override_styles/pressed = SubResource("stylebox_paper_pressed")
 theme_override_styles/disabled = SubResource("stylebox_choice_disabled")
-theme_override_colors/font_color = Color(0.15, 0.25, 0.4, 1.0)
+theme_override_colors/font_color = Color(0.15, 0.2, 0.3, 1.0)
 theme_override_font_sizes/font_size = 42
 text = "📄
 PAPER"
 
-[node name="PaperFlutter" type="CPUParticles2D" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons/PaperButton"]
-position = Vector2(90.0, 90.0)
-emitting = false
-amount = 25
-lifetime = 1.0
-one_shot = false
-explosiveness = 0.3
-randomness = 0.6
-emission_shape = 1
-emission_sphere_radius = 80.0
-direction = Vector2(0.0, -1.0)
-spread = 90.0
-gravity = Vector2(0.0, 50.0)
-initial_velocity_min = 15.0
-initial_velocity_max = 40.0
-angular_velocity_min = -180.0
-angular_velocity_max = 180.0
-scale_amount_min = 2.0
-scale_amount_max = 5.0
-scale_amount_curve = SubResource("curve_sparkle_scale")
-color_ramp = SubResource("gradient_paper_flutter")
-
 [node name="ScissorsButton" type="Button" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons"]
 custom_minimum_size = Vector2(180.0, 180.0)
 layout_mode = 2
-theme_override_styles/normal = SubResource("stylebox_choice_normal")
-theme_override_styles/hover = SubResource("stylebox_choice_hover")
-theme_override_styles/pressed = SubResource("stylebox_choice_pressed")
+theme_override_styles/normal = SubResource("stylebox_scissors_normal")
+theme_override_styles/hover = SubResource("stylebox_scissors_hover")
+theme_override_styles/pressed = SubResource("stylebox_scissors_pressed")
 theme_override_styles/disabled = SubResource("stylebox_choice_disabled")
-theme_override_colors/font_color = Color(0.15, 0.25, 0.4, 1.0)
+theme_override_colors/font_color = Color(0.15, 0.2, 0.3, 1.0)
 theme_override_font_sizes/font_size = 42
 text = "✂️
 SCISSORS"
-
-[node name="ScissorsSparkle" type="CPUParticles2D" parent="GameContainer/MiddleSection/ContentContainer/ChoiceButtons/ScissorsButton"]
-position = Vector2(90.0, 90.0)
-emitting = false
-amount = 20
-lifetime = 0.6
-one_shot = false
-explosiveness = 0.9
-randomness = 0.3
-emission_shape = 1
-emission_sphere_radius = 75.0
-direction = Vector2(0.0, -1.0)
-spread = 180.0
-gravity = Vector2(0.0, 0.0)
-initial_velocity_min = 25.0
-initial_velocity_max = 55.0
-scale_amount_min = 2.0
-scale_amount_max = 4.0
-scale_amount_curve = SubResource("curve_sparkle_scale")
-color_ramp = SubResource("gradient_scissors_sparkle")
 
 [node name="ResultLabel" type="Label" parent="GameContainer/MiddleSection/ContentContainer"]
 layout_mode = 2
@@ -342,6 +379,71 @@ text = "← BACK TO MENU"
 [node name="RevealOverlay" type="CanvasLayer" parent="."]
 layer = 10
 visible = false
+
+[node name="ClashParticles" type="Node2D" parent="RevealOverlay"]
+
+[node name="ScissorsShatter" type="CPUParticles2D" parent="RevealOverlay/ClashParticles"]
+emitting = false
+amount = 30
+lifetime = 1.0
+one_shot = true
+explosiveness = 1.0
+randomness = 0.4
+emission_shape = 1
+emission_sphere_radius = 50.0
+direction = Vector2(0.0, 1.0)
+spread = 180.0
+gravity = Vector2(0.0, 500.0)
+initial_velocity_min = 100.0
+initial_velocity_max = 250.0
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+scale_amount_min = 3.0
+scale_amount_max = 6.0
+scale_amount_curve = SubResource("curve_sparkle_scale")
+color_ramp = SubResource("gradient_scissors_sparkle")
+
+[node name="PaperWrap" type="CPUParticles2D" parent="RevealOverlay/ClashParticles"]
+emitting = false
+amount = 25
+lifetime = 1.5
+one_shot = true
+explosiveness = 0.6
+randomness = 0.5
+emission_shape = 1
+emission_sphere_radius = 80.0
+direction = Vector2(0.0, 0.0)
+spread = 360.0
+gravity = Vector2(0.0, -50.0)
+initial_velocity_min = 40.0
+initial_velocity_max = 80.0
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+scale_amount_min = 4.0
+scale_amount_max = 7.0
+scale_amount_curve = SubResource("curve_sparkle_scale")
+color_ramp = SubResource("gradient_paper_flutter")
+
+[node name="PaperShred" type="CPUParticles2D" parent="RevealOverlay/ClashParticles"]
+emitting = false
+amount = 35
+lifetime = 1.2
+one_shot = true
+explosiveness = 0.8
+randomness = 0.6
+emission_shape = 1
+emission_sphere_radius = 60.0
+direction = Vector2(0.0, 1.0)
+spread = 120.0
+gravity = Vector2(0.0, 150.0)
+initial_velocity_min = 30.0
+initial_velocity_max = 80.0
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+scale_amount_min = 2.0
+scale_amount_max = 5.0
+scale_amount_curve = SubResource("curve_sparkle_scale")
+color_ramp = SubResource("gradient_paper_flutter")
 
 [node name="VictoryConfetti" type="CPUParticles2D" parent="RevealOverlay"]
 position = Vector2(640.0, 200.0)

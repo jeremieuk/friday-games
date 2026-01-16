@@ -1,6 +1,6 @@
 progress:
-  last_updated: "2026-01-16T10:30:00Z"
-  current_phase: "requirements"
+  last_updated: "2026-01-16T18:00:00Z"
+  current_phase: "architecture"
   status: "Complete"
 
   phases:
@@ -19,8 +19,23 @@ progress:
         - No persistence (MVP)
 
     architecture:
-      status: "Not Started"
+      status: "Complete"
       output_file: "spr/docs/architecture.md"
+      completed_at: "2026-01-16T18:00:00Z"
+      version: "1.2"
+      notes: |
+        Comprehensive architecture design completed (v1.2 updated).
+        Key architectural decisions:
+        - Hybrid pattern: State Machine + Component-Based + Three-Layer Separation
+        - Core Layer (pure C#, no Godot) for 100% testability
+        - Service Layer (minimal Godot) for managers and orchestration
+        - Presentation Layer (full Godot) for scenes and UI
+        - GameManager with explicit state machine (MainMenu/ModeSelection/Playing/GameOver)
+        - Separate scene files for each game mode (SingleMatch/Tournament/Survival/Multiplayer)
+        - Records for data objects (immutable value types)
+        - GUT framework for testing (80%+ coverage target)
+        - AI random only (no difficulty levels per requirements)
+        - Two-stage multiplayer transitions: (1) P1 looks away for P2's turn, (2) P1 returns for shared reveal
 
     game_design_doc:
       status: "Not Started"
@@ -30,4 +45,4 @@ progress:
       status: "Not Started"
       output_dir: "spr/"
 
-  next_action: "Begin Phase 2: Architecture Design. Use prompt 02-architecture-prompt.md and reference spr/docs/requirements.md. Focus on designing scene hierarchy, state machine for game modes, and data structure for Choice objects."
+  next_action: "Begin Phase 3: Game Design Document. Use prompt 03-game-design-doc-prompt.md and reference requirements.md and architecture.md. Focus on detailed game flow, UI specifications, and asset specifications."

@@ -3,50 +3,58 @@ extends GutTest
 # Tests random choice generation for AI player
 
 var AIOpponent = load("res://scripts/ai/AIOpponent.cs")
-var GameLogic = load("res://scripts/core/GameLogic.cs")
+var _ai  # Instance for each test
+
+# C# enum values (GDScript can't access nested C# enums directly)
+const ROCK = 0
+const PAPER = 1
+const SCISSORS = 2
+
+func before_each():
+	_ai = AIOpponent.new()
+
+func after_each():
+	# AIOpponent extends RefCounted - just set to null, GC handles cleanup
+	_ai = null
 
 func test_ai_returns_valid_choice():
-	var ai = AIOpponent.new()
-	var choice = ai.MakeChoice()
+	var choice = _ai.MakeChoice()
 
 	assert_true(
-		choice == GameLogic.Choice.Rock or
-		choice == GameLogic.Choice.Paper or
-		choice == GameLogic.Choice.Scissors,
+		choice == ROCK or
+		choice == PAPER or
+		choice == SCISSORS,
 		"AI should return a valid choice (Rock, Paper, or Scissors)"
 	)
 
 func test_ai_returns_valid_choice_multiple_times():
-	var ai = AIOpponent.new()
-
 	for i in range(10):
-		var choice = ai.MakeChoice()
+		var choice = _ai.MakeChoice()
 		assert_true(
-			choice == GameLogic.Choice.Rock or
-			choice == GameLogic.Choice.Paper or
-			choice == GameLogic.Choice.Scissors,
+			choice == ROCK or
+			choice == PAPER or
+			choice == SCISSORS,
 			"Each AI choice should be valid"
 		)
 
 func test_ai_randomness():
 	# Over 30 choices, AI should pick all three options at least once
 	# This is probabilistic but very unlikely to fail (probability ~0.0000046)
-	var ai = AIOpponent.new()
 	var choices = []
 
 	for i in range(30):
-		choices.append(ai.MakeChoice())
+		choices.append(_ai.MakeChoice())
 
 	var has_rock = false
 	var has_paper = false
 	var has_scissors = false
 
 	for choice in choices:
-		if choice == GameLogic.Choice.Rock:
+		if choice == ROCK:
 			has_rock = true
-		elif choice == GameLogic.Choice.Paper:
+		elif choice == PAPER:
 			has_paper = true
-		elif choice == GameLogic.Choice.Scissors:
+		elif choice == SCISSORS:
 			has_scissors = true
 
 	assert_true(has_rock, "AI should eventually pick Rock")
@@ -56,19 +64,18 @@ func test_ai_randomness():
 func test_ai_choices_are_distributed():
 	# Over 100 choices, no single choice should dominate completely
 	# Each choice should appear at least 15 times out of 100 (15% threshold)
-	var ai = AIOpponent.new()
 	var rock_count = 0
 	var paper_count = 0
 	var scissors_count = 0
 
 	for i in range(100):
-		var choice = ai.MakeChoice()
+		var choice = _ai.MakeChoice()
 		match choice:
-			GameLogic.Choice.Rock:
+			ROCK:
 				rock_count += 1
-			GameLogic.Choice.Paper:
+			PAPER:
 				paper_count += 1
-			GameLogic.Choice.Scissors:
+			SCISSORS:
 				scissors_count += 1
 
 	assert_gt(rock_count, 15, "Rock should appear at least 15 times out of 100")
@@ -77,15 +84,16 @@ func test_ai_choices_are_distributed():
 
 func test_multiple_ai_instances_are_independent():
 	# Two different AI instances should produce different sequences
-	var ai1 = AIOpponent.new()
 	var ai2 = AIOpponent.new()
 
 	var choices1 = []
 	var choices2 = []
 
 	for i in range(10):
-		choices1.append(ai1.MakeChoice())
+		choices1.append(_ai.MakeChoice())
 		choices2.append(ai2.MakeChoice())
+
+	# ai2 is RefCounted - GC handles cleanup when it goes out of scope
 
 	var differences = 0
 	for i in range(10):

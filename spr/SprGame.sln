@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprGame", "SprGame.csproj", "{99C60B67-ACA2-4F80-93D4-CFAB6677B94E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SprGame", "SprGame.csproj", "{8A84AC06-3112-4FB5-BF86-7CBD60FD409F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,11 +9,11 @@ Global
 	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{99C60B67-ACA2-4F80-93D4-CFAB6677B94E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99C60B67-ACA2-4F80-93D4-CFAB6677B94E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99C60B67-ACA2-4F80-93D4-CFAB6677B94E}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{99C60B67-ACA2-4F80-93D4-CFAB6677B94E}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{99C60B67-ACA2-4F80-93D4-CFAB6677B94E}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{99C60B67-ACA2-4F80-93D4-CFAB6677B94E}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{8A84AC06-3112-4FB5-BF86-7CBD60FD409F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A84AC06-3112-4FB5-BF86-7CBD60FD409F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A84AC06-3112-4FB5-BF86-7CBD60FD409F}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{8A84AC06-3112-4FB5-BF86-7CBD60FD409F}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{8A84AC06-3112-4FB5-BF86-7CBD60FD409F}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{8A84AC06-3112-4FB5-BF86-7CBD60FD409F}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal

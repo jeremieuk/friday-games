@@ -248,8 +248,7 @@ public partial class SingleMatchController : Control {
 
         // Stage 2.5: Clash Animation (skip for draws)
         if (result != GameLogic.Result.Draw) {
-            TriggerClashAnimation(playerChoice, aiChoice, result);
-            await ToSignal(GetTree().CreateTimer(0.8f), SceneTreeTimer.SignalName.Timeout);
+            await TriggerClashAnimation(playerChoice, aiChoice, result);
         }
 
         // Stage 3: Show result
@@ -257,6 +256,18 @@ public partial class SingleMatchController : Control {
         DisplayRoundResult(result, isMatchComplete);
         await ToSignal(GetTree().CreateTimer(RESULT_DISPLAY_TIME),
                        SceneTreeTimer.SignalName.Timeout);
+
+        // Reset emoji positions and visibility for next round
+        if (_playerChoiceEmoji != null) {
+            _playerChoiceEmoji.Position = Vector2.Zero;
+            _playerChoiceEmoji.Scale = Vector2.One;
+            _playerChoiceEmoji.Modulate = new Color(1, 1, 1, 1);
+        }
+        if (_aiChoiceEmoji != null) {
+            _aiChoiceEmoji.Position = Vector2.Zero;
+            _aiChoiceEmoji.Scale = Vector2.One;
+            _aiChoiceEmoji.Modulate = new Color(1, 1, 1, 1);
+        }
 
         // Hide overlay with fade-out
         if (_revealBackdrop != null) {
@@ -375,31 +386,87 @@ public partial class SingleMatchController : Control {
     }
 
     /// <summary>
-    /// Triggers the clash animation showing the winning choice defeating the losing choice.
+    /// Triggers the clash animation showing the cards moving together, colliding, and the loser breaking apart.
     /// </summary>
-    private void TriggerClashAnimation(
+    private async Task TriggerClashAnimation(
         GameLogic.Choice playerChoice,
         GameLogic.Choice aiChoice,
         GameLogic.Result result) {
 
-        // Determine which particle to trigger based on result
-        CpuParticles2D? particleToEmit = null;
-        Vector2 emitPosition;
+        // Calculate collision point
+        Vector2 collisionPoint = GetCollisionMidpoint();
 
-        if (result == GameLogic.Result.PlayerWins) {
-            // Player won - animate AI's losing choice
-            emitPosition = GetAIChoicePosition();
-            particleToEmit = GetDefeatParticle(aiChoice, playerChoice);
-        } else {
-            // AI won - animate player's losing choice
-            emitPosition = GetPlayerChoicePosition();
-            particleToEmit = GetDefeatParticle(playerChoice, aiChoice);
+        // Determine which emoji loses and which wins
+        Label? losingEmoji = result == GameLogic.Result.PlayerWins ? _aiChoiceEmoji : _playerChoiceEmoji;
+        Label? winningEmoji = result == GameLogic.Result.PlayerWins ? _playerChoiceEmoji : _aiChoiceEmoji;
+        GameLogic.Choice losingChoice = result == GameLogic.Result.PlayerWins ? aiChoice : playerChoice;
+        GameLogic.Choice winningChoice = result == GameLogic.Result.PlayerWins ? playerChoice : aiChoice;
+
+        // Phase 1: Move both emojis toward center (0.4s)
+        var playerTween = CreateTween();
+        var aiTween = CreateTween();
+
+        if (_playerChoiceEmoji != null) {
+            Vector2 playerTarget = collisionPoint - _playerChoiceEmoji.Size / 2;
+            playerTween.TweenProperty(_playerChoiceEmoji, "global_position", playerTarget, 0.4f)
+                .SetTrans(Tween.TransitionType.Cubic)
+                .SetEase(Tween.EaseType.In);
         }
+
+        if (_aiChoiceEmoji != null) {
+            Vector2 aiTarget = collisionPoint - _aiChoiceEmoji.Size / 2;
+            aiTween.TweenProperty(_aiChoiceEmoji, "global_position", aiTarget, 0.4f)
+                .SetTrans(Tween.TransitionType.Cubic)
+                .SetEase(Tween.EaseType.In);
+        }
+
+        // Wait for movement to complete
+        await ToSignal(GetTree().CreateTimer(0.4f), SceneTreeTimer.SignalName.Timeout);
+
+        // Phase 2: Emit particles at collision point (0.1s)
+        CpuParticles2D? particleToEmit = GetDefeatParticle(losingChoice, winningChoice);
 
         if (particleToEmit != null) {
-            particleToEmit.Position = emitPosition;
+            particleToEmit.Position = collisionPoint;
             particleToEmit.Emitting = true;
         }
+
+        // Optional impact sound (uncomment when audio file is available)
+        // GetNode<AudioManager>("/root/AudioManager").PlaySFX("impact");
+
+        // Phase 3: Break/fade losing emoji or special animation for paper-wraps-rock (0.3s)
+        if (losingEmoji != null) {
+            bool isPaperWrap = losingChoice == GameLogic.Choice.Rock && winningChoice == GameLogic.Choice.Paper;
+
+            if (isPaperWrap) {
+                // Rock stays visible but shakes (paper wraps around it)
+                var shakeTween = CreateTween();
+                shakeTween.TweenProperty(losingEmoji, "rotation", 0.1f, 0.1f);
+                shakeTween.TweenProperty(losingEmoji, "rotation", -0.1f, 0.1f);
+                shakeTween.TweenProperty(losingEmoji, "rotation", 0.0f, 0.1f);
+            } else {
+                // Normal break animation (scale to 0, fade out)
+                var breakTween = CreateTween();
+                breakTween.SetParallel(true);
+                breakTween.TweenProperty(losingEmoji, "scale", Vector2.Zero, 0.3f)
+                    .SetTrans(Tween.TransitionType.Back)
+                    .SetEase(Tween.EaseType.In);
+                breakTween.TweenProperty(losingEmoji, "modulate:a", 0.0f, 0.3f)
+                    .SetTrans(Tween.TransitionType.Cubic);
+            }
+        }
+
+        // Winning emoji bounces back slightly
+        if (winningEmoji != null) {
+            var bounceTween = CreateTween();
+            bounceTween.TweenProperty(winningEmoji, "scale", new Vector2(1.2f, 1.2f), 0.15f)
+                .SetTrans(Tween.TransitionType.Elastic)
+                .SetEase(Tween.EaseType.Out);
+            bounceTween.TweenProperty(winningEmoji, "scale", Vector2.One, 0.15f);
+        }
+
+        // Total time: 0.4 (move) + 0.1 (particles) + 0.3 (break) = 0.8s
+        await ToSignal(GetTree().CreateTimer(0.4f), SceneTreeTimer.SignalName.Timeout);
     }
 
     /// <summary>
@@ -435,5 +502,17 @@ public partial class SingleMatchController : Control {
             return _aiChoiceEmoji.GlobalPosition + _aiChoiceEmoji.Size / 2;
         }
         return Vector2.Zero;
+    }
+
+    /// <summary>
+    /// Calculates the midpoint between player and AI emoji positions for collision.
+    /// </summary>
+    private Vector2 GetCollisionMidpoint() {
+        Vector2 playerPos = GetPlayerChoicePosition();
+        Vector2 aiPos = GetAIChoicePosition();
+        return new Vector2(
+            (playerPos.X + aiPos.X) / 2,
+            (playerPos.Y + aiPos.Y) / 2
+        );
     }
 }
